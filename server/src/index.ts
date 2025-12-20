@@ -5,6 +5,7 @@ import { basePrompt as nodeBasePrompt } from "./defaults/node.js";
 import { basePrompt as reactBasePrompt } from "./defaults/react.js";
 import { BASE_PROMPT, getSystemPrompt } from "./prompts.js";
 import cors from "cors";
+import test from "node:test";
 
 
 dotenv.config();
@@ -59,8 +60,14 @@ app.post("/template", async (req, res) => {
 })
 
 app.post("/chat", async (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no")
+  res.flushHeaders();
+
   const message: string = req.body.message;
-  const response = await ai.models.generateContent({
+  const response = await ai.models.generateContentStream({
     model: 'gemini-2.5-flash',
     config: {systemInstruction: getSystemPrompt() },
     contents: [
@@ -71,9 +78,16 @@ app.post("/chat", async (req, res) => {
     ]
   })
 
-  res.json({
-    response: response.text
-  })
+let completeText = "";
+for await (const chunk of response) {
+  if(!chunk.text) continue;
+
+  res.write(`data: ${JSON.stringify(chunk.text)}\n\n`);
+  completeText += chunk.text;
+}
+res.write(`event: end\ndata: ${JSON.stringify(completeText)}\n\n`);
+res.end();
+
 })
 
 app.listen(3000);
