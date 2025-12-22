@@ -1,16 +1,16 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import LandingPage from './pages/LandingPage'
+import ChatPage from './pages/ChatPage'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      count is {count}
-      <button onClick={() => setCount((count) => count + 1)}>
-        increment
-      </button>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/chat" element={<ChatPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
