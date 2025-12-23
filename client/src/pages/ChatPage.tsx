@@ -1,6 +1,6 @@
 import ChatPanel from '../components/ChatPanel'
-import StepsPanel from '../components/StepsPanel'
-import WorkspacePanel from '../components/WorkspacePanel'
+import StepsPanel from '../components/StepsPanel.jsx'
+import WorkspacePanel from '../components/WorkspacePanel.jsx'
 
 function ChatPage() {
   return (
