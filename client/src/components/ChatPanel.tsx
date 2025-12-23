@@ -17,6 +17,7 @@ function ChatPanel() {
     const response = await axios.post('/chat', { message: llmprompt + message } );
     console.log(response.data);
   }
+  
   const handleSend = async () => {
     const response: templateResponse = await axios.post('/template', { message }) as any;
     const llmprompt = response.prompt;
