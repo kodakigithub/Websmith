@@ -19,7 +19,7 @@ function ChatPanel() {
   }
   
   const handleSend = async () => {
-    const response: templateResponse = await axios.post('/template', { message }) as any;
+    const response: templateResponse = await axios.post('/template', { message }) as templateResponse;
     const llmprompt = response.prompt;
     const uiPrompt = response.uiPrompt;
     hitLLM(llmprompt);

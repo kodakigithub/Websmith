@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const API_URL = 'http://localhost:3000' // adjust to your backend URL
+const API_URL = 'http://localhost:3000' 
 
 function LandingPage() {
   const [prompt, setPrompt] = useState('')
