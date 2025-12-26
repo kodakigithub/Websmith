@@ -16,13 +16,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// async function main() {
-//   const response = await ai.models.generateContent({
-//     model: "gemini-2.5-flash",
-//     contents: "explain why i am the best in a few words",
-//   });
-//   console.log(response.text);
-// }
 app.post("/template", async (req, res) => {
   const prompt: any = req.body.prompt;
 
@@ -41,13 +34,15 @@ app.post("/template", async (req, res) => {
   const answer = response.text as string; // react or node
   if (answer == "react"){
     res.json({
-       prompts: [BASE_PROMPT, reactBasePrompt]
+       prompts: [BASE_PROMPT, reactBasePrompt],
+       uiPrompts: [reactBasePrompt]
     })
     return;
   }
   if( answer == "node") {
     res.json({
-      prompts: [nodeBasePrompt]
+      prompts: [nodeBasePrompt],
+      uiPrompts: [nodeBasePrompt]
     })
     return;
   }
