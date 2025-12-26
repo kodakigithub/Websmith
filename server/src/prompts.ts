@@ -156,7 +156,7 @@ export const getSystemPrompt = (cwd: string = WORK_DIR) => `
         - Avoid large, monolithic files
         - Use imports to connect modules appropriately
 
-        15. ALWAYS include a \`<boltExplanation>\` tag at the start of the artifact (before any \`<boltAction>\` tags) with a brief 1-2 sentence explanation of what you're building or changing.
+        15. ALWAYS include a \`<boltExplanation>\` tag at the start of the artifact (before any \`<boltAction>\` tags) with a brief 1-2 sentence explanation of what you are building or changing.
     </artifact_instructions>
     </artifact_info>
 
