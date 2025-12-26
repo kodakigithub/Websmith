@@ -1,14 +1,37 @@
 import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
-import type { ExpectedTemplateResponse, TemplateErrorResponse } from '../types'
+import type { ExpectedTemplateResponse, TemplateErrorResponse, ChatResponse } from '../types'
+import { parseArtifact, extractExplanation } from '../utils/parseResponse'
 
 export function ChatPanel() {
     const [input, setInput] = useState('')
+    const [llmText, setLlmText] = useState('')
     
     async function hitChatEP(message: string) {
         try {
-            const llmResponse: string  = await axios.post('http://localhost:3000/chat', { message });
-            console.log("LLM Response:", llmResponse);
+            const response = await axios.post<ChatResponse>('http://localhost:3000/chat', { message });
+            const llmResponse = response.data.response;
+            
+            // Extract explanation from boltExplanation tag
+            const explanation = extractExplanation(llmResponse);
+            
+            // Set the LLM text response for display
+            setLlmText(explanation);
+            
+            // Parse the artifact containing actions
+            const artifact = parseArtifact(llmResponse);
+            
+            console.log("Explanation:", explanation);
+            console.log("Parsed artifact:", artifact);
+            
+            if (artifact) {
+                // Separate file and shell actions
+                const fileActions = artifact.actions.filter(a => a.type === 'file');
+                const shellActions = artifact.actions.filter(a => a.type === 'shell');
+                
+                console.log("File actions:", fileActions);
+                console.log("Shell actions:", shellActions);
+            }
         } catch (error) {
             console.error("Error hitting chat endpoint:", error);
         }
@@ -59,6 +82,7 @@ export function ChatPanel() {
                 minHeight: 0
             }}>
                 <h2>Chat</h2>
+                {llmText && <p>{llmText}</p>}
             </div>
 
             {/* Chat Input Area - 20% min, expands upward */}
