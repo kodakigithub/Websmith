@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
-import type { ExpectedTemplateResponse, TemplateErrorResponse, ChatResponse } from '../types'
+import type { ExpectedTemplateResponse, TemplateErrorResponse, ChatResponse, BoltAction } from '../types'
 import { parseArtifact, extractExplanation } from '../utils/parseResponse'
 
-export function ChatPanel() {
+interface ChatPanelProps {
+    onActionsChange: (actions: BoltAction[]) => void
+}
+
+export function ChatPanel({ onActionsChange }: ChatPanelProps) {
     const [input, setInput] = useState('')
     const [llmText, setLlmText] = useState('')
     
@@ -31,6 +35,9 @@ export function ChatPanel() {
                 
                 console.log("File actions:", fileActions);
                 console.log("Shell actions:", shellActions);
+                
+                // Pass actions to parent component
+                onActionsChange(artifact.actions);
             }
         } catch (error) {
             console.error("Error hitting chat endpoint:", error);
