@@ -81,10 +81,11 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
     return (
         <div style={{ 
             width: '20%', 
-            borderRight: '1px solid #ccc', 
+            borderRight: '1px solid #3a3a3a', 
             display: 'flex', 
             flexDirection: 'column',
-            height: '100%'
+            height: '100%',
+            backgroundColor: '#252526'
         }}>
             {/* Conversation Area - 80% */}
             <div style={{ 
@@ -100,7 +101,7 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
 
             {/* Chat Input Area - 20% min, expands upward */}
             <div style={{ 
-                borderTop: '1px solid #ccc', 
+                borderTop: '1px solid #3a3a3a', 
                 padding: '1rem',
                 maxHeight: '50%',
                 display: 'flex',
@@ -117,7 +118,12 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
                         maxHeight: '200px',
                         resize: 'none',
                         overflow: 'auto',
-                        boxSizing: 'border-box'
+                        boxSizing: 'border-box',
+                        backgroundColor: '#3c3c3c',
+                        color: '#e0e0e0',
+                        border: '1px solid #3a3a3a',
+                        borderRadius: '4px',
+                        padding: '8px'
                     }}
                     rows={1}
                     onInput={(e) => {
@@ -129,7 +135,15 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
                 <button 
                     onClick={handleSend}
                     disabled={isLoading || !input.trim()}
-                    style={{ alignSelf: 'flex-end' }}
+                    style={{ 
+                        alignSelf: 'flex-end',
+                        backgroundColor: '#0e639c',
+                        color: '#fff',
+                        border: 'none',
+                        padding: '6px 14px',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                    }}
                 >
                     {isLoading ? 'Generating...' : 'Send'}
                 </button>
