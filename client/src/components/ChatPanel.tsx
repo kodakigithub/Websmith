@@ -128,7 +128,7 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
                 />
                 <button 
                     onClick={handleSend}
-                    disabled={isLoading}
+                    disabled={isLoading || !input.trim()}
                     style={{ alignSelf: 'flex-end' }}
                 >
                     {isLoading ? 'Generating...' : 'Send'}
