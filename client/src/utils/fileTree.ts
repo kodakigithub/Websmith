@@ -15,7 +15,17 @@ export function buildFileTree(fileActions: FileAction[]): FileNode[] {
     const root: FileNode[] = [];
 
     for (const action of fileActions) {
-        const parts = action.filePath.split('/');
+        // Strip /home/project/ prefix if present
+        let filePath = action.filePath;
+        if (filePath.startsWith('/home/project/')) {
+            filePath = filePath.replace('/home/project/', '');
+        }
+        if (filePath.startsWith('/')) {
+            filePath = filePath.slice(1);
+        }
+        
+        const parts = filePath.split('/').filter(p => p.length > 0);
+        
         let currentLevel = root;
 
         for (let i = 0; i < parts.length; i++) {
