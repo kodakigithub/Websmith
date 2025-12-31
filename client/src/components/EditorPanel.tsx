@@ -26,8 +26,9 @@ function FileTreeNode({ node, depth = 0, selectedFile, onSelectFile, expandedFol
                 style={{ 
                     cursor: 'pointer', 
                     padding: '2px 4px',
-                    backgroundColor: isSelected ? '#e0e0e0' : 'transparent',
-                    borderRadius: '2px'
+                    backgroundColor: isSelected ? '#094771' : 'transparent',
+                    borderRadius: '2px',
+                    color: '#e0e0e0'
                 }}
                 onClick={() => {
                     if (node.type === 'file') {
@@ -74,7 +75,13 @@ export function EditorPanel({ files }: EditorPanelProps) {
     return (
         <div style={{ width: '60%', display: 'flex', height: '100%' }}>
             {/* File Explorer - 20% */}
-            <div style={{ width: '20%', borderRight: '1px solid #ccc', padding: '1rem', overflowY: 'auto' }}>
+            <div style={{ 
+                width: '20%', 
+                borderRight: '1px solid #3a3a3a', 
+                padding: '1rem', 
+                overflowY: 'auto',
+                backgroundColor: '#252526'
+            }}>
                 <h3>File Explorer</h3>
                 {fileTree.map((node, index) => (
                     <FileTreeNode 
@@ -89,14 +96,26 @@ export function EditorPanel({ files }: EditorPanelProps) {
             </div>
 
             {/* Code Block - 80% */}
-            <div style={{ width: '80%', padding: '1rem', overflowY: 'auto' }}>
+            <div style={{ 
+                width: '80%', 
+                padding: '1rem', 
+                overflowY: 'auto',
+                backgroundColor: '#1e1e1e'
+            }}>
                 <h3>{selectedFile?.name}</h3>
                 {selectedFile ? (
-                    <pre style={{ background: '#f5f5f5', padding: '1rem', borderRadius: '4px', height: '100%', overflow: 'auto' }}>
+                    <pre style={{ 
+                        background: '#2d2d2d', 
+                        padding: '1rem', 
+                        borderRadius: '4px', 
+                        height: '100%', 
+                        overflow: 'auto',
+                        color: '#e0e0e0'
+                    }}>
                         <code>{selectedFile.content}</code>
                     </pre>
                 ) : (
-                    <p>Select a file to view its content.</p>
+                    <p style={{ color: '#808080' }}>Select a file to view its content.</p>
                 )}
             </div>
         </div>
