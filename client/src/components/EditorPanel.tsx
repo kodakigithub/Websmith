@@ -12,10 +12,13 @@ interface FileTreeNodeProps {
     depth?: number
     selectedFile: FileNode | null
     onSelectFile: (file: FileNode) => void
+    expandedFolders: Set<string>
+    toggleFolder: (path: string) => void
 }
 
-function FileTreeNode({ node, depth = 0, selectedFile, onSelectFile }: FileTreeNodeProps) {
+function FileTreeNode({ node, depth = 0, selectedFile, onSelectFile, expandedFolders, toggleFolder }: FileTreeNodeProps) {
     const isSelected = selectedFile?.path === node.path
+    const isExpanded = expandedFolders.has(node.path)
     
     return (
         <div style={{ paddingLeft: `${depth * 12}px` }}>
@@ -29,18 +32,22 @@ function FileTreeNode({ node, depth = 0, selectedFile, onSelectFile }: FileTreeN
                 onClick={() => {
                     if (node.type === 'file') {
                         onSelectFile(node)
+                    } else {
+                        toggleFolder(node.path)
                     }
                 }}
             >
                 {node.type === 'folder' ? '📁' : '📄'} {node.name}
             </div>
-            {node.children?.map((child, index) => (
+            {node.type === 'folder' && isExpanded && node.children?.map((child, index) => (
                 <FileTreeNode 
                     key={index} 
                     node={child} 
                     depth={depth + 1}
                     selectedFile={selectedFile}
                     onSelectFile={onSelectFile}
+                    expandedFolders={expandedFolders}
+                    toggleFolder={toggleFolder}
                 />
             ))}
         </div>
@@ -49,7 +56,20 @@ function FileTreeNode({ node, depth = 0, selectedFile, onSelectFile }: FileTreeN
 
 export function EditorPanel({ files }: EditorPanelProps) {
     const [selectedFile, setSelectedFile] = useState<FileNode | null>(null)
+    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set())
     const fileTree = buildFileTree(files)
+
+    const toggleFolder = (path: string) => {
+    setExpandedFolders(prev => {
+        const next = new Set(prev)
+        if (next.has(path)) {
+            next.delete(path)  // collapse
+        } else {
+            next.add(path)     // expand
+        }
+        return next
+    })
+}
 
     return (
         <div style={{ width: '60%', display: 'flex', height: '100%' }}>
@@ -62,6 +82,8 @@ export function EditorPanel({ files }: EditorPanelProps) {
                         node={node}
                         selectedFile={selectedFile}
                         onSelectFile={setSelectedFile}
+                        expandedFolders={expandedFolders}
+                        toggleFolder={toggleFolder}
                     />
                 ))}
             </div>
