@@ -8,4 +8,4 @@ In addition to code generation, Websmith will include a **sandboxed environment*
 - This currently only supports node and react projects
 
 ## Status
-🚧 **Work in progress** — Sandbox and UI features are under development.
+🚧 **Work in progress** — Sandbox feature is under development.
