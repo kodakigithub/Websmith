@@ -10,6 +10,7 @@ interface ChatPanelProps {
 export function ChatPanel({ onActionsChange }: ChatPanelProps) {
     const [input, setInput] = useState('')
     const [llmText, setLlmText] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     
     async function hitChatEP(message: string) {
         try {
@@ -49,12 +50,13 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
     }
 
     async function hitLLM(message: string) {
+        setIsLoading(true)
         try {
             const response = await axios.post<ExpectedTemplateResponse>('http://localhost:3000/template', { prompt: message });
             console.log("Sending message to LLM:", message);
             const llmPrompt = JSON.stringify(response.data.prompts) +'\n\n'+message;
             const uiPrompt = JSON.stringify(response.data.uiPrompts);
-            hitChatEP(llmPrompt);
+            await hitChatEP(llmPrompt);
             handleStepResponse(uiPrompt);
             
         } catch (error) {
@@ -64,6 +66,8 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
             } else {
                 console.error("Unexpected error:", error);
             }
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -89,6 +93,7 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
                 minHeight: 0
             }}>
                 <h2>Chat</h2>
+                {isLoading && <p>Generating...</p>}
                 {llmText && <p>{llmText}</p>}
             </div>
 
@@ -122,9 +127,10 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
                 />
                 <button 
                     onClick={handleSend}
+                    disabled={isLoading}
                     style={{ alignSelf: 'flex-end' }}
                 >
-                    Send
+                    {isLoading ? 'Generating...' : 'Send'}
                 </button>
             </div>
         </div>
