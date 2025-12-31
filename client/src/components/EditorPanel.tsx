@@ -68,7 +68,7 @@ export function EditorPanel({ files }: EditorPanelProps) {
 
             {/* Code Block - 80% */}
             <div style={{ width: '80%', padding: '1rem', overflowY: 'auto' }}>
-                <h3>Code</h3>
+                <h3>{selectedFile?.name}</h3>
                 {selectedFile ? (
                     <pre style={{ background: '#f5f5f5', padding: '1rem', borderRadius: '4px', height: '100%', overflow: 'auto' }}>
                         <code>{selectedFile.content}</code>
