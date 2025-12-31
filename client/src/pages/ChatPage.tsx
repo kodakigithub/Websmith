@@ -11,7 +11,13 @@ export function ChatPage() {
     const fileActions = actions.filter((a): a is FileAction => a.type === 'file')
 
     return (
-        <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
+        <div style={{ 
+            display: 'flex', 
+            height: '100vh', 
+            width: '100vw',
+            backgroundColor: '#1e1e1e',
+            color: '#e0e0e0'
+        }}>
             <ChatPanel onActionsChange={setActions} />
             <StepsPanel actions={actions} />
             <EditorPanel files={fileActions} />
