@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
 import type { ExpectedTemplateResponse, TemplateErrorResponse, ChatResponse, BoltAction } from '../types'
 import { parseArtifact, extractExplanation } from '../utils/parseResponse'
+import { BASE_API_URL } from '../constants'
 
 interface ChatPanelProps {
     onActionsChange: (actions: BoltAction[]) => void
@@ -14,7 +15,7 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
     
     async function hitChatEP(message: string) {
         try {
-            const response = await axios.post<ChatResponse>('http://localhost:3000/chat', { message });
+            const response = await axios.post<ChatResponse>(`${BASE_API_URL}/chat`, { message });
             const llmResponse = response.data.response;
             
             // Extract explanation from boltExplanation tag
@@ -52,7 +53,7 @@ export function ChatPanel({ onActionsChange }: ChatPanelProps) {
     async function hitLLM(message: string) {
         setIsLoading(true)
         try {
-            const response = await axios.post<ExpectedTemplateResponse>('http://localhost:3000/template', { prompt: message });
+            const response = await axios.post<ExpectedTemplateResponse>(`${BASE_API_URL}/template`, { prompt: message });
             console.log("Sending message to LLM:", message);
             const llmPrompt = JSON.stringify(response.data.prompts) +'\n\n'+message;
             const uiPrompt = JSON.stringify(response.data.uiPrompts);
