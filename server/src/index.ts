@@ -17,13 +17,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// async function main() {
-//   const response = await ai.models.generateContent({
-//     model: "gemini-2.5-flash",
-//     contents: "explain why i am the best in a few words",
-//   });
-//   console.log(response.text);
-// }
 app.post("/template", async (req, res) => {
   const prompt: any = req.body.prompt;
 
